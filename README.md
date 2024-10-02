@@ -16,6 +16,7 @@ Proyecto de Clase para la Unidad 1 de la Asignada de Desarrollo Móvil Integral 
 |8|Funciones y Parametros|11|Finalizada|
 |9|Clases y Sobreescritura de Métodos Nativos|9|Finalizada|
 |10|Constructores Nombrados|8|Activa|
+|11|Setters y Getters|9|Activa|
 
 
 ### LISTA DE HERRAMIENTAS
