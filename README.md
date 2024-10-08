@@ -18,6 +18,7 @@ Proyecto de Clase para la Unidad 1 de la Asignada de Desarrollo Móvil Integral 
 |10|Constructores Nombrados|8|Finalizada|
 |11|Setters y Getters|9|Finalizada|
 |12|Aserciones|3|Activa|
+|13|Clases Abstractas|11|Activa|
 
 
 ### LISTA DE HERRAMIENTAS
