@@ -24,6 +24,7 @@ Proyecto de Clase para la Unidad 1 de la Asignada de Desarrollo Móvil Integral 
 |16|Async Await|Pendiente|Activa|
 |17|Try Catch On Finally|Pendiente|Activa|
 |18|Streams|Pendiente|Activa|
+|19|Streams Await|Pendiente|Activa|
 
 
 ### LISTA DE HERRAMIENTAS
