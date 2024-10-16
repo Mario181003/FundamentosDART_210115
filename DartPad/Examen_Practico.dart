@@ -1,189 +1,233 @@
 void main() {
-  // CASO DE PRUEBA 1 -- NUEVO MIEMBRO QUE SE REGISTRA HOY
-  final miembro1 = Miembro(
-    ID: 1,
-    tituloCortesia: "Ing.",
-    nombre: "Mario",
-    primerApellido: "Gutierrez",
-    segundoApellido: "Rosales",
-    fechaNacimiento: DateTime(2003, 10, 18), 
-    fotografia: "url/foto.jpg",
-    genero: "M", 
-    tipoSangre: "O+",
-    membresiaID: 1,
-    usuarioID: 1,
-    tipoMembresia: "Semanal",
+  GymSystem gymSystem = GymSystem();
+
+  // CASO 1: MIEMBRO NUEVO
+  Member mario = Member(
+    cortesyTitle: 'Ing.',
+    name: 'Mario',
+    firstLastname: 'Gutierrez',
+    secondLastname: 'Rosales',
+    gender: Gender.M,
+    bloodgroup: BloodGroup.O_pos,
+    photoURL: 'images/foto1.jpg',
+    birthdate: DateTime(2003, 10, 18),
+    isActive: true,
+    createdAt: DateTime.now(),
+    lastVisit: DateTime.now(),
+    updatedAt: DateTime.now(),
+    
+    id: 1,
+    membershipID: 7,
+    userID: 1,
+    memberType: MemberType.Nuevo,
+    status: 'Activo',
+    antique: '2 años',
   );
-  print(miembro1);
 
-  // CASO DE PRUEBA 2 -- MIEMBRO QUE RENUEVA SU MEMBRESÍA
-  final miembro2 = Miembro(
-    ID: 2,
-    tituloCortesia: "Dr.",
-    nombre: "Jonathan",
-    primerApellido: "Rendon",
-    segundoApellido: "Carbajal",
-    fechaNacimiento: DateTime(2003, 05, 06), 
-    fotografia: "url/foto2.jpg",
-    genero: "M", 
-    tipoSangre: "O+",
-    membresiaID: 2,
-    usuarioID: 2,
-    tipoMembresia: "Mensual",
+  gymSystem.register(mario);
+
+  // CASO 2: MIEMBRO NUEVO QUE ALGUNA VEZ FUE TRABAJADOR
+  Member dulce = Member(
+    cortesyTitle: 'Ing.',
+    name: 'Dulce Esmeralda',
+    firstLastname: 'Hernandez',
+    secondLastname: 'Juarez',
+    gender: Gender.F,
+    bloodgroup: BloodGroup.O_pos,
+    photoURL: 'images/foto2.jpg',
+    birthdate: DateTime(2002, 9, 30),
+    isActive: true,
+    createdAt: DateTime(2023, 5, 15),
+    lastVisit: DateTime(2024,3,20),
+    updatedAt: DateTime.now(),
+    id: 2,
+    membershipID: 102,
+    userID: 1002,
+    memberType: MemberType.Ocasional,
+    status: 'Activo',
+    antique: '1 años',
   );
-  print(miembro2);
 
-  // CASO DE PRUEBA 3 -- CANCELANDO LA MEMBRESÍA DE UN MIEMBRO
-  print("Cancelando la membresía del miembro 2:");
-  miembro2.cancelaSuscripcion();
-  print(miembro2);
+  gymSystem.register(dulce);
+
+  // CASO 3: CANCELAR LA MEMBRESIA DE UN MIEMBRO
+  Member marco = Member(
+    cortesyTitle: 'Ing.',
+    name: 'Marco Antonio',
+    firstLastname: 'Morales',
+    secondLastname: 'Rivera',
+    gender: Gender.M,
+    bloodgroup: BloodGroup.O_pos,
+    photoURL: 'images/foto3.jpg',
+    birthdate: DateTime(2000, 1, 17),
+    isActive: true,
+    createdAt: DateTime(2020, 8, 1),
+    updatedAt: DateTime(2023, 9, 20),
+    lastVisit: DateTime(2023,12,20),
+    id: 3,
+    membershipID: 103,
+    userID: 1003,
+    memberType: MemberType.Frecuente,
+    status: 'Inactivo',
+    antique: '3 meses',
+  );
+
+  gymSystem.register(marco);
+
+  // MOSTRAR LA LISTA DE LOS MIEMBROS
+  print('\nLISTADO: ');
+  gymSystem.listMembers().forEach((member) => print(member));
+
+  // MEMBRESIA CANCELADA
+   marco.cancelarSuscripcion();
+  
+   // ELIMINAR UN MIEMBRO DE LA LISTA 
+  gymSystem.remove(dulce.id.toString(),dulce.name);
+  
+  print('MIEMBROS DESPUES DE ELIMINAR: ');
+  gymSystem.listMembers().forEach((member) => print(member));
 }
 
-// Clase abstracta <Persona>
-// Representa una estructura básica para una persona con atributos comunes.
-abstract class Persona {
-  int ID; 
-  String? tituloCortesia; 
-  String nombre; 
-  String primerApellido;
-  String segundoApellido; 
-  DateTime fechaNacimiento; 
-  String? fotografia; 
-  String genero; 
-  String tipoSangre; 
-  DateTime fechaRegistro; 
-  DateTime? fechaActualizacion; 
 
-  // Constructor de la clase abstracta Persona
-  Persona({
-    required this.ID,
-    this.tituloCortesia,
-    required this.nombre,
-    required this.primerApellido,
-    required this.segundoApellido,
-    required this.fechaNacimiento,
-    this.fotografia,
-    required this.genero,
-    required this.tipoSangre,
-    DateTime? fechaRegistro,
-    DateTime? fechaActualizacion,
-  })  : fechaRegistro = fechaRegistro ?? DateTime.now(), // Fecha de registro por defecto es la actual
-        fechaActualizacion = fechaActualizacion;
+// ----------------------------CLASES ABSATRACTAS-------------------------
+enum Gender { M, F, NB }
+enum BloodGroup { A_pos, A_neg, B_pos, B_neg, AB_pos, AB_neg, O_pos, O_neg }
+enum MemberType { Frecuente, Ocasional, Nuevo, Esporadico, UnaSolaVisita }
+abstract class Person {
+  String cortesyTitle;
+  String name;
+  String firstLastname;
+  String secondLastname;
+  Gender gender;
+  BloodGroup bloodgroup;
+  String photoURL;
+  DateTime birthdate;
+  bool isActive;
+  DateTime createdAt;
+ 
 
-  // Método abstracto que deben implementar las clases hijas.
-  void cancelaSuscripcion();
-}
-
-// Clase <Miembro> que extiende de <Persona>
-// Representa a un miembro del gimnasio, con datos específicos de su membresía.
-class Miembro extends Persona {
-  int membresiaID; 
-  int usuarioID; 
-  String tipoMembresia; 
-  String antiguedad; 
-  bool estatus; 
-
-  // Constructor de la clase Miembro
-  Miembro({
-    required int ID,
-    String? tituloCortesia,
-    required String nombre,
-    required String primerApellido,
-    required String segundoApellido,
-    required DateTime fechaNacimiento,
-    String? fotografia,
-    required String genero,
-    required String tipoSangre,
-    required this.membresiaID,
-    required this.usuarioID,
-    required this.tipoMembresia,
-    this.estatus = true, // El miembro está activo por defecto
-    DateTime? fechaRegistro,
-    DateTime? fechaActualizacion,
-  })  : antiguedad = "${DateTime.now().difference(fechaRegistro ?? DateTime.now()).inDays ~/ 30} meses", // Calcula la antigüedad en meses
-        super(
-          ID: ID,
-          tituloCortesia: tituloCortesia,
-          nombre: nombre,
-          primerApellido: primerApellido,
-          segundoApellido: segundoApellido,
-          fechaNacimiento: fechaNacimiento,
-          fotografia: fotografia,
-          genero: genero,
-          tipoSangre: tipoSangre,
-          fechaRegistro: fechaRegistro,
-          fechaActualizacion: fechaActualizacion,
-        );
-
-  // Método para leer los datos del miembro
-  void leer() {
-    print(this);
-  }
-
-  // Método para actualizar el tipo de membresía
-  void actualizar(String nuevaMembresia) {
-    tipoMembresia = nuevaMembresia;
-    fechaActualizacion = DateTime.now(); // Actualiza la fecha de modificación
-    print("Membresía actualizada a: $tipoMembresia");
-  }
-
-  // Método para eliminar un miembro (inactivarlo)
-  void eliminar() {
-    estatus = false; // Cambia el estado del miembro a inactivo
-    fechaActualizacion = DateTime.now(); // Actualiza la fecha de modificación
-    print("Miembro eliminado: $nombre $primerApellido.");
-  }
-
-  // Sobreescritura del método abstracto cancelaSuscripcion
-  @override
-  void cancelaSuscripcion() {
-    estatus = false; // Cancela la suscripción cambiando el estatus
-    fechaActualizacion = DateTime.now(); // Actualiza la fecha de modificación
-    print("La suscripción ha sido cancelada para $nombre $primerApellido.");
-  }
-
-  // Sobreescritura del método toString para personalizar la impresión de los datos del miembro
-  @override
-  String toString() {
-    final String formattedFechaNacimiento =
-        "${fechaNacimiento.day.toString().padLeft(2, '0')}/" +
-            "${fechaNacimiento.month.toString().padLeft(2, '0')}/${fechaNacimiento.year}";
-
-    final String formattedFechaRegistro =
-        "${fechaRegistro.day.toString().padLeft(2, '0')}/" +
-            "${fechaRegistro.month.toString().padLeft(2, '0')}/${fechaRegistro.year} " +
-            "${fechaRegistro.hour.toString().padLeft(2, '0')}:${fechaRegistro.minute.toString().padLeft(2, '0')}";
-
-    return """
-    --------------------------------------------------------
-    DATOS DEL MIEMBRO
-    --------------------------------------------------------
-    ID: $ID
-    Nombre: $nombre $primerApellido $segundoApellido
-    Género: $genero
-    Tipo de membresía: $tipoMembresia
-    Fecha de nacimiento: $formattedFechaNacimiento
-    Antigüedad: $antiguedad
-    Fecha de registro: $formattedFechaRegistro
-    Estatus: ${estatus ? 'Activo' : 'Inactivo'}
-    --------------------------------------------------------
-    """;
-  }
-}
-
-/*
-Resumen de las clases abstractas:
-
-1. Las clases abstractas, como `Persona`, son clases que no se pueden instanciar directamente.
-- Estas sirven como base para otras clases.
-- Definen atributos y métodos comunes que deberán ser implementados o sobrescritos en las clases hijas.
-
-2. Los métodos abstractos, como `cancelaSuscripcion`, son métodos que no tienen implementación en la clase abstracta.
-- Las clases hijas deben sobrescribir estos métodos y proporcionar su implementación concreta.
-
-3. En este código, la clase `Persona` es una clase abstracta que define los atributos básicos de una persona, como nombre, apellidos, género, etc., pero deja ciertos comportamientos, como cancelar suscripción, para que las clases hijas lo implementen.
+  Person({
+    required this.cortesyTitle,
+    required this.name,
+    required this.firstLastname,
+    required this.secondLastname,
+    required this.gender,
+    required this.bloodgroup,
+    required this.photoURL,
+    required this.birthdate,
+    required this.isActive,
+    required this.createdAt,
    
-4. La clase `Miembro` extiende de `Persona` y es responsable de implementar el comportamiento específico relacionado con los miembros del gimnasio, como cancelar suscripción, calcular antigüedad, actualizar la membresía, etc.
+  });
+  
+  @override
+    String toString() {
+ return """
+ 
+    PERSONA
+    
+    Nombre Completo: $cortesyTitle $name $firstLastname $secondLastname
+    Género: $gender
+    Tipo de Sangre: $bloodgroup
+    Fotografía: $photoURL
+    Fecha de Nacimiento: $birthdate
+    Estatus: ${isActive ? "Activo" : "Inactivo"}
+    Fecha de Registro: $createdAt
+    """;
+    }
 
-Las clases abstractas promueven la reutilización del código y ayudan a definir una estructura clara y flexible para las entidades dentro del sistema.
-*/
+  }
+
+class Member extends Person {
+  int id;
+  int membershipID;
+  int userID;
+  MemberType memberType;
+  String status;
+  String antique;
+  DateTime lastVisit;
+  DateTime updatedAt;
+  Gender gender;
+  BloodGroup bloodgroup;
+  Member({
+    required this.id,
+    required this.membershipID,
+    required this.userID,
+    required String cortesyTitle,
+    required String name,
+    required String firstLastname,
+    required String secondLastname,
+    required this.gender,
+    required this.bloodgroup,
+    required String photoURL,
+    required DateTime birthdate,
+    required bool isActive,
+    required DateTime createdAt,
+    required this.memberType,
+    required this.status,
+    required this.antique,
+    required this.lastVisit,
+    required this.updatedAt
+  }) : super(
+            cortesyTitle: cortesyTitle,
+            name: name,
+            firstLastname: firstLastname,
+            secondLastname: secondLastname,
+            gender:gender,
+            bloodgroup:bloodgroup,
+            photoURL: photoURL,
+            birthdate: birthdate,
+            isActive: isActive,
+            createdAt: createdAt);
+  
+  void cancelarSuscripcion() {
+  status = 'Inactivo';
+  print('\nLa suscripción del miembro ha sido cancelada.');
+}
+
+  @override
+    String toString() {
+      return ''' 
+      ${super.toString()}
+      MIEMBRO
+      
+      ID: $id
+      Tipo de memebresia: $memberType
+      Estatus: $status
+      Antiguedad: $antique
+      Fecha registrp: $updatedAt
+      Fecha de última visita: $updatedAt
+      ''';
+    }
+
+}
+
+abstract class MemberRegistry {
+  void register(Member member);
+  void remove(String id, String name);
+  List<Member> listMembers();
+}
+
+//  Clase que implementa la interfaz RegistroMiembro
+class GymSystem implements MemberRegistry {
+  List<Member> members = [];
+
+  @override
+  void register(Member member) {
+    members.add(member);
+    print("""REGISTROS
+    ${member.name}""");
+  }
+
+  @override
+  void remove(String id, String name) {
+    // removeWhere: eliminar el primer miembro que cumpla con la condición
+    members.removeWhere((m) => m.id.toString() == id);
+    print('El miembro $name con el ID $id se ha eliminado.');
+  }
+
+  @override
+  List<Member> listMembers() {
+    return members;
+  }
+}
