@@ -4,7 +4,7 @@ void main() {
   var myName = 'Marinho';
   String myLastName = 'Gutiérrez';
   final int myDNI = 210115;
-  late final int myAge;
+  // late final int myAge;
   
 //   Corregir mi nombre
   myName = "Mario";
